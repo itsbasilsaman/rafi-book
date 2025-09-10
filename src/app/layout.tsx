@@ -34,22 +34,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Set lang="ar" by default for SSR and initial load
   return (
-
-    <html lang="en">
-      <body
-        
-      >
-       <LanguageProvider>
-            <FontProvider 
+    <html lang="ar">
+      <body>
+        <LanguageProvider>
+          <FontProvider 
             poppinsClass={poppins.className} 
             ibmPlexSansArabicClass={ibmPlexSansArabic.className}
           >
             <RafiHeader/>
             {children}
             <Footer/>
-         </FontProvider>
-       </LanguageProvider>
+          </FontProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

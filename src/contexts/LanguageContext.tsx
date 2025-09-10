@@ -20,22 +20,18 @@ export const LanguageContext = createContext<LanguageContextType | undefined>(un
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
 
-  // Always initialize to 'ar' for SSR safety (default Arabic)
-  const [language, setLanguageState] = useState<Language>('ar');
- 
-
-  // On mount, update language from localStorage if available, otherwise default to 'ar'
-  useEffect(() => {
+  // Always initialize to 'ar' for SSR safety (default Arabic), and check localStorage only once on first render
+  const [language, setLanguageState] = useState<Language>(() => {
     if (typeof window !== 'undefined') {
       const storedLang = localStorage.getItem('language');
       if (storedLang === 'ar' || storedLang === 'en') {
-        setLanguageState(storedLang);
-      } else {
-        setLanguageState('ar'); // default to Arabic if nothing stored
-        localStorage.setItem('language', 'ar');
+        return storedLang as Language;
       }
+      localStorage.setItem('language', 'ar');
+      return 'ar';
     }
-  }, []);
+    return 'ar';
+  });
 
   // Update localStorage and DOM whenever language changes (client only)
   useEffect(() => {
