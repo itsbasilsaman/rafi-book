@@ -51,15 +51,13 @@ export default function ProductCard({ title, price, image, href }: ProductCardPr
           {price && (
             <p className="text-base font-medium text-center text-black/70 mt-1">{price}</p>
           )}
-          <a
-            href="https://payments.cashfree.com/forms?code=RAFIH-GIFT"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href={href}
             className="mt-4 w-full block px-7 py-3 rounded-full bg-black text-white font-bold shadow hover:bg-gray-900 transition-colors duration-200 text-base text-center border border-black"
             style={{ letterSpacing: 1 }}
           >
-            {isArabic ? 'اشتري الآن' : 'Buy Now'}
-          </a>
+            {isArabic ? 'عرض التفاصيل' : 'View Detail'}
+          </Link>
         </div>
       </div>
     </div>
