@@ -5,6 +5,7 @@ import ProductBuyButton from "@/components/Rafih/ProductBuyButton";
  
 import { useLanguage } from "../../../contexts/LanguageContext";
 import Image from "next/image";
+import { emojiToIcon } from "./emojiToIcon";
 
 const products = [
   {
@@ -91,82 +92,96 @@ export default function ProductDetailPage(){
   }
 
 
+  const isArabic = language === 'ar';
   return (
-    <div className="min-h-screen bg-[#fdf6f2] flex flex-col">
-    {/* Sticky Top Bar with section navigation */}
-    <div  className="pt-[90px]">
- 
-       
-    </div>
-    <main className="flex-1 flex flex-col items-center w-full">
-      <div className="w-full max-w-lg mx-auto flex flex-col gap-6 items-center pt-8 pb-24 px-2 md:pt-16 md:pb-32">
-        {/* Animated Square Image Carousel */}
-        <div className="w-full aspect-square max-w-xs mx-auto relative overflow-hidden rounded-2xl shadow-xl border border-gray-200 bg-black flex items-center justify-center">
-          {product.images && product.images.map((img, idx) => (
-            <Image
-              key={img}
-              src={img}
-              alt={product.title[language] + ' ' + (idx + 1)}
-              width={400}
-              height={400}
-              className={`object-cover w-full h-full absolute transition-all duration-700 ${idx === currentImage ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
-              style={{ left: 0, top: 0, borderRadius: '1rem', transition: 'all 0.7s cubic-bezier(.4,0,.2,1)' }}
-            />
-          ))}
+    <div className="min-h-screen bg-[#fdf6f2] flex flex-col" dir={isArabic ? 'rtl' : 'ltr'}>
+      {/* Sticky Top Bar with section navigation */}
+      <div className="pt-[90px]"></div>
+      <main className="flex-1 flex flex-col items-center w-full">
+        <div className={`w-full max-w-lg mx-auto flex flex-col gap-6 items-center pt-8 pb-24 px-2 md:pt-16 md:pb-32 ${isArabic ? 'items-end' : ''}`}>
+          {/* Animated Square Image Carousel */}
+          <div className="w-full aspect-square max-w-xs mx-auto relative overflow-hidden rounded-2xl shadow-xl border border-gray-200 bg-black flex items-center justify-center">
+            {product.images && product.images.map((img, idx) => (
+              <Image
+                key={img}
+                src={img}
+                alt={product.title[language] + ' ' + (idx + 1)}
+                width={400}
+                height={400}
+                className={`object-cover w-full h-full absolute transition-all duration-700 ${idx === currentImage ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+                style={{ left: 0, top: 0, borderRadius: '1rem', transition: 'all 0.7s cubic-bezier(.4,0,.2,1)' }}
+              />
+            ))}
+          </div>
+          {/* Details Section */}
+          <section ref={descRef} className={`w-full flex flex-col items-center ${isArabic ? 'text-right' : 'text-center'} gap-3`}>
+            <div className={`w-full bg-white/90 rounded-2xl shadow border border-gray-100 px-6 py-8 flex flex-col items-center gap-4 ${isArabic ? 'items-end' : ''}`}>
+              <h1 className="text-2xl md:text-3xl font-extrabold text-black mb-2 leading-tight tracking-tight drop-shadow-sm">{product.title[language]}</h1>
+              <div className="w-16 h-1 bg-gradient-to-r from-green-400 to-green-600 rounded-full mb-2"></div>
+              <ProductDescription description={product.description[language]} isArabic={isArabic} />
+              {product.price && (
+                <div className="text-xl font-bold text-green-700 mb-2 bg-green-50 px-4 py-2 rounded-full border border-green-200 shadow-sm inline-block">{product.price}</div>
+              )}
+            </div>
+          </section>
+          {/* Details Section 2 (for navigation) */}
         </div>
-        {/* Details Section */}
-        <section ref={descRef} className="w-full flex flex-col items-center text-center gap-3">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1 leading-tight">{product.title[language]}</h1>
-          <ProductDescription description={product.description[language]} />
-          {product.price && (
-            <div className="text-xl font-semibold text-black mb-2">{product.price}</div>
-          )}
-        </section>
-        {/* Details Section 2 (for navigation) */}
-        
+      </main>
+      {/* Fixed Buy Now Button at the bottom */}
+      <div className="fixed bottom-0 left-0 w-full z-40 bg-white to-transparent px-4 pb-4 flex items-center justify-center  shadow-2xl">
+        <ProductBuyButton />
       </div>
-    </main>
-    {/* Fixed Buy Now Button at the bottom */}
-    <div className="fixed bottom-0 left-0 w-full z-40 bg-gradient-to-t from-white/95 via-white/80 to-transparent px-4 py-4 flex items-center justify-center border-t border-gray-200 shadow-2xl">
-      <ProductBuyButton />
     </div>
- 
-  </div>
   );
 }
 
 // Helper component to format emoji points in product descriptions
-function ProductDescription({ description }: { description: string }) {
+function ProductDescription({ description, isArabic = false }: { description: string, isArabic?: boolean }) {
   // Split by newlines and filter out empty lines
   const lines = description.split(/\n+/).filter(Boolean);
   // Find the index where the points start (first line with emoji)
   const emojiRegex = /^[\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u;
   const firstEmojiIdx = lines.findIndex(line => emojiRegex.test(line.trim()));
   return (
-    <div className="text-lg text-gray-700 mb-4 text-center max-w-2xl">
+    <div className={`text-base md:text-lg text-gray-700 mb-4 max-w-2xl flex flex-col gap-2 ${isArabic ? 'text-right items-end' : 'text-center items-center'}`}>
       {/* Intro text before points */}
       {firstEmojiIdx > 0 && (
-        <p className="mb-4">{lines.slice(0, firstEmojiIdx).join(' ')}</p>
+        <p className="mb-4 text-gray-600 leading-relaxed font-medium">{lines.slice(0, firstEmojiIdx).join(' ')}</p>
       )}
-      {/* Emoji points as a styled list */}
-      <ul className="list-none flex flex-col gap-2 items-center mb-4">
+      {/* Icon points as a styled list */}
+      <ul className={`list-none flex flex-col gap-3 mb-4 w-full ${isArabic ? 'items-end' : 'items-center'}`}>
         {lines.slice(firstEmojiIdx).map((line, i) => {
           const match = line.match(emojiRegex);
           if (match) {
+            const iconKey = match[0] as keyof typeof emojiToIcon;
+            const Icon = emojiToIcon[iconKey] || emojiToIcon['❓'];
             return (
-              <li key={i} className="flex items-start gap-2 w-full max-w-xl text-left">
-                <span className="text-xl md:text-2xl leading-none">{match[0]}</span>
-                <span className="flex-1">{line.replace(emojiRegex, '').trim()}</span>
+              <li key={i} className={`flex items-start gap-3 w-full max-w-xl bg-green-50 rounded-xl px-4 py-2 shadow-sm border border-green-100 ${isArabic ? 'flex-row-reverse text-right' : 'text-left'}`}>
+                {isArabic ? (
+                  <>
+                    <span className="flex-1 text-gray-800 font-medium">{line.replace(emojiRegex, '').trim()}</span>
+                    <span className="text-2xl md:text-3xl leading-none select-none ml-2">
+                      <Icon />
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-2xl md:text-3xl leading-none select-none mr-2">
+                      <Icon />
+                    </span>
+                    <span className="flex-1 text-gray-800 font-medium">{line.replace(emojiRegex, '').trim()}</span>
+                  </>
+                )}
               </li>
             );
           }
-          // If not an emoji line, render as normal text
-          return <li key={i} className="w-full max-w-xl text-left">{line}</li>;
+          // If not an icon line, render as normal text
+          return <li key={i} className={`w-full max-w-xl ${isArabic ? 'text-right' : 'text-left'} text-gray-700`}>{line}</li>;
         })}
       </ul>
       {/* Outro text if any (after points) */}
       {firstEmojiIdx >= 0 && lines.length > firstEmojiIdx && lines[lines.length-1] && !emojiRegex.test(lines[lines.length-1].trim()) && (
-        <p>{lines[lines.length-1]}</p>
+        <p className="mt-2 text-gray-500 italic">{lines[lines.length-1]}</p>
       )}
     </div>
   );
