@@ -9,10 +9,10 @@ const products = [
   {
     id: "1",
     title: {
-      en: "Kerala & India Treasure – Limited Edition Gift Hamper (Only 50 Worldwide)",
-      ar: "كنوز كيرالا والهند – علبة هدايا إصدار محدود (فقط 50 حول العالم)"
+      en: "Kerala & India Treasure – Limited Edition Gift Hamper ",
+      ar: "كنوز كيرالا والهند – علبة هدايا إصدار محدود  "
     },
-    image: "/rafi-products/ProductOne-1.jpg",
+    image: "/rafi-products/ProductOne-2.jpg",
     href: "/products/1"
   },
   {

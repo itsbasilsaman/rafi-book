@@ -11,8 +11,8 @@ const products = [
   {
     id: "1",
     title: {
-      en: "Kerala & India Treasure – Limited Edition Gift Hamper (Only 50 Worldwide)",
-      ar: "كنوز كيرالا والهند – علبة هدايا إصدار محدود (فقط 50 حول العالم)"
+      en: "Kerala & India Treasure – Limited Edition Gift Hamper  ",
+      ar: "كنوز كيرالا والهند – علبة هدايا إصدار محدود  "
     },
     images: [
       "/rafi-products/ProductOne-1.jpg",
@@ -35,26 +35,16 @@ const products = [
       "/rafi-products/ProductTwo-1.jpg",
       "/rafi-products/ProductTwo-2.jpg",
       "/rafi-products/ProductTwo-3.jpg",
-      "/rafi-products/ProductTwo-4.jpg"
+      "/rafi-products/ProductTwo-4.jpg",
+        "/rafi-products/ProductTwo-5.jpg",
+      "/rafi-products/ProductTwo-6.jpg"
     ],
     description: {
       en: `Discover the timeless secrets of Ayurveda with this all-in-one Herbal Care Kit, crafted in Kerala – the land of Ayurveda. Each product is made with authentic herbs, oils, and natural extracts to restore balance, beauty, and wellness for your body and mind.\n\nWhat’s Inside:\n\n🌿 Ayurvedic Herbal Hair Oil – nourishes scalp, strengthens roots, adds shine\n\n🍃 Herbal Shampoo – gentle, natural cleansing for healthy hair\n\n🪷 Kumkumadi Thailam – the ancient beauty elixir for glowing skin\n\n🌸 Herbal Face Pack – revitalizes and refreshes skin\n\n🌿 Aloe Vera Gel – soothing hydration and cooling therapy\n\n🌾 Sandalwood Cream – brightens and softens skin naturally\n\n💆 Ayurveda Massage Oil – relieves stress and relaxes muscles\n\n🧼 Herbal Soap – pure herbal cleansing bar for daily freshness\n\n🪸 Herbal Body Scrub – exfoliates and renews skin\n\n✨ Presented as a premium wellness collection, this kit is your complete guide to natural self-care, beauty, and relaxation – rooted in the 5,000-year-old wisdom of Ayurveda.`,
       ar: `اكتشف أسرار الأيورفيدا الخالدة مع مجموعة العناية العشبية الكاملة هذه، المصنوعة في كيرالا – أرض الأيورفيدا. كل منتج مصنوع من أعشاب وزيوت ومستخلصات طبيعية أصيلة لاستعادة التوازن والجمال والعافية لجسمك وعقلك.\n\nماذا يوجد بالداخل:\n\n🌿 زيت شعر عشبي أيورفيدي – يغذي فروة الرأس، يقوي الجذور، ويمنح اللمعان\n\n🍃 شامبو عشبي – تنظيف لطيف وطبيعي لشعر صحي\n\n🪷 كومكومادي ثايلام – إكسير الجمال القديم لبشرة متوهجة\n\n🌸 قناع وجه عشبي – ينشط وينعش البشرة\n\n🌿 جل الألوفيرا – ترطيب وتهدئة فورية\n\n🌾 كريم الصندل – يضيء وينعم البشرة طبيعيًا\n\n💆 زيت مساج أيورفيدي – يخفف التوتر ويسترخي العضلات\n\n🧼 صابون عشبي – صابون تنظيف طبيعي للاستخدام اليومي\n\n🪸 مقشر للجسم بالأعشاب – يقشر ويجدد البشرة\n\n✨ مقدمة كمجموعة عافية فاخرة، هذه المجموعة هي دليلك الكامل للعناية الذاتية الطبيعية والجمال والاسترخاء – مستمدة من حكمة الأيورفيدا التي تعود إلى 5000 عام.`
     }
   },
-  {
-    id: "3",
-    title: {
-      en: "Collector's Dummy Product 2",
-      ar: "منتج تجريبي للعرض فقط 2"
-    },
-    price: "$499 USD",
-    image: "/products/plates.jpg",
-    description: {
-      en: "This is a dummy product for display purposes only.",
-      ar: "هذا منتج تجريبي للعرض فقط."
-    }
-  },
+ 
 ];
 export default function ProductDetailPage(){
 
@@ -68,13 +58,9 @@ export default function ProductDetailPage(){
     if (!product || !product.images) return;
     if (typeof window === "undefined") return;
     const animate = () => {
-      if (window.innerWidth < 768) {
-        setCurrentImage((prev) => (prev + 1) % product.images.length);
-      } else {
-        setCurrentImage((prev) => (prev + 2) % product.images.length);
-      }
+      setCurrentImage((prev) => (prev + 1) % product.images.length);
     };
-    const interval = setInterval(animate, 2000);
+    const interval = setInterval(animate, 1000); // 1 second
     return () => clearInterval(interval);
   }, [product]);
 
@@ -119,9 +105,7 @@ export default function ProductDetailPage(){
               <h1 className="text-2xl md:text-3xl font-extrabold text-black mb-2 leading-tight tracking-tight drop-shadow-sm">{product.title[language]}</h1>
               <div className="w-16 h-1 bg-gradient-to-r from-green-400 to-green-600 rounded-full mb-2"></div>
               <ProductDescription description={product.description[language]} isArabic={isArabic} />
-              {product.price && (
-                <div className="text-xl font-bold text-green-700 mb-2 bg-green-50 px-4 py-2 rounded-full border border-green-200 shadow-sm inline-block">{product.price}</div>
-              )}
+              
             </div>
           </section>
           {/* Details Section 2 (for navigation) */}
